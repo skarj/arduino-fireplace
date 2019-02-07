@@ -1,9 +1,9 @@
 #include <SPI.h>
 #include <SoftwareSerial.h>
 #include <IRremote.h>
-#include <GU800_GFX.h>
 #include "DFRobotDFPlayerMini.h"
 
+#define __TESTING
 #define DISPLAY_CS 10
 #define DISPLAY_DC 9
 #define DISPLAY_RESET 7
@@ -11,7 +11,13 @@
 #define DFPLAYER_RX 4
 #define DFPLAYER_TX 5
 
-GU800 display(DISPLAY_CS, DISPLAY_DC, DISPLAY_RESET);
+#ifdef __TESTING
+  #include <Adafruit_SSD1306.h>
+  Adafruit_SSD1306 display(128, 64, &SPI, DISPLAY_DC, DISPLAY_RESET, DISPLAY_CS);
+#else
+  #include <GU800_GFX.h>
+  GU800 display(DISPLAY_CS, DISPLAY_DC, DISPLAY_RESET);
+#endif
 unsigned long display_time;
 
 IRrecv irrecv(IR_PIN);
